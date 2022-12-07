@@ -14,7 +14,9 @@ func BuscaBinaria(dados []arq.Dado, linha int) int {
 
 		media = (menor + maior) / 2
 
-		if dados[media].Ordem < linha {
+		if dados[media].Ordem == linha {
+			return media
+		} else if dados[media].Ordem < linha {
 			menor = media + 1
 		} else {
 			maior = media - 1

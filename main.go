@@ -24,6 +24,11 @@ func main() {
 
 	for {
 
+		fmt.Print("\n\nLista de arquivos encontrados: ")
+		for m := range mapa.MapaNumArq {
+			fmt.Print(m, " ")
+		}
+
 		var arquivo string
 		fmt.Print("\n\nQual o número do arquivo que deseja consultar? ")
 		fmt.Scan(&arquivo)
@@ -40,7 +45,7 @@ func main() {
 
 				var opcao string
 				fmt.Print("\nBuscar no arquivo ", arquivo, ":")
-				fmt.Print("\n\n1 - Quantas notas ", nota, " existem")
+				fmt.Print("\n1 - Quantas notas ", nota, " existem")
 				fmt.Print("\n2 - Se contém a nota ", nota, " em uma determinada linha")
 				fmt.Print("\n\nInsira a opção que deseja: ")
 				fmt.Scan(&opcao)
@@ -60,29 +65,42 @@ func main() {
 						fmt.Print("\nO arquivo ", numArq, " não contém nenhuma nota ", nota)
 					}
 
-				} else {
+				} else if opcao == "2" {
 
 					var linha string
 					fmt.Print("\nQual a linha que deseja consultar? ")
 					fmt.Scan(&linha)
 
-					numLinha, _ := strconv.Atoi(linha)
+					if regexp.MustCompile("[0-9]+").FindString(linha) != "" {
 
-					if tabela.BuscaBinariaNotaLinha(numArq, nota, numLinha) {
-						fmt.Print("\nA nota ", nota, " existe na linha ", numLinha, " no arquivo ", numArq)
+						numLinha, _ := strconv.Atoi(linha)
+
+						if tabela.BuscaBinariaNotaLinha(numArq, nota, numLinha) {
+							fmt.Print("\nA nota ", nota, " existe na linha ", numLinha, " no arquivo ", numArq)
+						} else {
+							fmt.Print("\nA nota ", nota, " NÃO existe na linha ", numLinha, " no arquivo ", numArq)
+						}
+
 					} else {
-						fmt.Print("\nA nota ", nota, " NÃO existe na linha ", numLinha, " no arquivo ", numArq)
+						fmt.Print("\n\nERRO: Número da linha inserida é inválida\n\n")
+						break
 					}
 
+				} else {
+					fmt.Print("\n\nERRO: Opção inválida\n\n")
+					break
 				}
 
 				fmt.Print("\n\nDeseja continuar? ")
-				fmt.Print("\n\n1 - Continuar")
+				fmt.Print("\n1 - Continuar")
 				fmt.Print("\n2 - Sair")
 				fmt.Print("\n\nInsira a opção que deseja: ")
 				fmt.Scan(&opcao)
 
 				if opcao == "2" {
+					break
+				} else if opcao != "1" {
+					fmt.Print("\n\nERRO: Opção inválida\n\n")
 					break
 				}
 
